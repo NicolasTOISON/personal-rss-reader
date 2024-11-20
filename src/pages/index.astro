@@ -9,6 +9,18 @@ const feedSources = [
   "https://piccalil.li/feed.xml",
   "https://piccalil.li/the-index/feed.xml",
   "https://cassidoo.co/rss.xml",
+  "https://blog.frontend-almanac.com/data/rss",
+  "https://whatislove.dev/feed.xml",
+  "https://css-tricks.com/feed",
+  "https://lea.verou.me/feed.xml",
+  "https://www.jameskerr.blog/index.xml",
+  "https://web.dev/static/blog/feed.xml",
+  "https://tomoweb.dev/rss.xml",
+  "https://css-tip.com/feed/feed.xml",
+  "https://www.joshwcomeau.com/rss.xml",
+  "https://www.sitepoint.com/sitepoint.rss",
+  "https://aralroca.com/rss.xml",
+  "https://martinfowler.com/feed.atom"
 ];
 
 const sevenDaysAgo = new Date();
@@ -58,7 +70,9 @@ const sortedFeedItems = feedItems.sort(
       sortedFeedItems.map((item) => (
         <ul>
           <li>
-            <a href={item.link} target="_blank">{item.title}</a>
+            <a href={item.link} target="_blank">
+              {item.title}
+            </a>
             <p>{item.feed}</p>
             <p>{item.date}</p>
           </li>
