@@ -1,68 +1,69 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
-import Parser from "rss-parser";
+import Layout from '../layouts/Layout.astro'
+import Parser from 'rss-parser'
 
 const feedSources = [
-  "https://www.smashingmagazine.com/feed/",
-  "https://developer.mozilla.org/en-US/blog/rss.xml",
-  "https://piccalil.li/feed.xml",
-  "https://piccalil.li/the-index/feed.xml",
-  "https://cassidoo.co/rss.xml",
-  "https://blog.frontend-almanac.com/data/rss",
-  "https://whatislove.dev/feed.xml",
-  "https://css-tricks.com/feed",
-  "https://lea.verou.me/feed.xml",
-  "https://www.jameskerr.blog/index.xml",
-  "https://web.dev/static/blog/feed.xml",
-  "https://tomoweb.dev/rss.xml",
-  "https://css-tip.com/feed/feed.xml",
-  "https://www.joshwcomeau.com/rss.xml",
-  "https://www.sitepoint.com/sitepoint.rss",
-  "https://aralroca.com/rss.xml",
-  "https://martinfowler.com/feed.atom",
-  "https://localghost.dev/rss",
-  "https://ethanmarcotte.com/wrote/feed.xml"
-];
+  'https://www.smashingmagazine.com/feed/',
+  'https://developer.mozilla.org/en-US/blog/rss.xml',
+  'https://piccalil.li/feed.xml',
+  'https://piccalil.li/the-index/feed.xml',
+  'https://cassidoo.co/rss.xml',
+  'https://blog.frontend-almanac.com/data/rss',
+  'https://whatislove.dev/feed.xml',
+  'https://css-tricks.com/feed',
+  'https://lea.verou.me/feed.xml',
+  'https://www.jameskerr.blog/index.xml',
+  'https://web.dev/static/blog/feed.xml',
+  'https://tomoweb.dev/rss.xml',
+  'https://css-tip.com/feed/feed.xml',
+  'https://www.joshwcomeau.com/rss.xml',
+  'https://www.sitepoint.com/sitepoint.rss',
+  'https://aralroca.com/rss.xml',
+  'https://martinfowler.com/feed.atom',
+  'https://localghost.dev/rss',
+  'https://ethanmarcotte.com/wrote/feed.xml',
+  'https://rss.beehiiv.com/feeds/4NnZaN9TmN.xml',
+  'https://rss.beehiiv.com/feeds/57R5ZGMFaO.xml',
+]
 
-const sevenDaysAgo = new Date();
-sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+const sevenDaysAgo = new Date()
+sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
 
-const parser = new Parser();
+const parser = new Parser()
 
 interface FeedItem {
-  feed?: string;
-  title?: string;
-  link?: string;
-  date?: Date;
+  feed?: string
+  title?: string
+  link?: string
+  date?: Date
 }
 
-const feedItems: FeedItem[] = [];
+const feedItems: FeedItem[] = []
 
 await Promise.allSettled(
   feedSources.map(async (source) => {
     try {
-      const feed = await parser.parseURL(source);
+      const feed = await parser.parseURL(source)
       feed.items.forEach((item) => {
-        const date = item.pubDate ? new Date(item.pubDate) : undefined;
+        const date = item.pubDate ? new Date(item.pubDate) : undefined
         if (date && date >= sevenDaysAgo) {
           feedItems.push({
             feed: feed.title,
             title: item.title,
             link: item.link,
             date,
-          });
+          })
         }
-      });
+      })
     } catch (error) {
-      console.error(`Error fetching feed from ${source}:`, error);
+      console.error(`Error fetching feed from ${source}:`, error)
     }
   })
-);
+)
 
 const sortedFeedItems = feedItems.sort(
   (a, b) => (b.date ?? new Date()).getTime() - (a.date ?? new Date()).getTime()
-);
+)
 ---
 
 <Layout title="Personal RSS Feeder">
